@@ -2,32 +2,16 @@
 
 {% block content %}
     <ul class="thumbnails">
+        {% for piece in pieces %}
         <li class="span4">
             <div class="thumbnail">
-                <a href="{{ url_for('detail', slug='rainbow')}}">
-                    <img src="{{ url_for('static', filename='img/art/rainbow.png') }}" alt="Artwork - Rainbow">
+                <a href="{{ url_for('detail', slug=piece.slug)}}">
+                    <img src="{{ piece.cover_url }}" alt="{{ piece.title }}">
                 </a>
-                <p class="pull-right muted">Oct 30, 2012</p>
-                <strong>Rainbow</strong>
+                <p class="pull-right muted">{{ piece.created.strftime('%B %d, %Y') }}</p>
+                <strong>{{ piece.title }}</strong>
             </div>
         </li>
-        <li class="span4">
-            <div class="thumbnail">
-                <a href="{{ url_for('detail', slug='hal')}}">
-                    <img src="{{ url_for('static', filename='img/art/hal.png') }}" alt="Artwork - Hal">
-                </a>
-                <p class="pull-right muted">Oct 30, 2012</p>
-                <strong>Hal</strong>
-            </div>
-        </li>
-        <li class="span4">
-            <div class="thumbnail">
-                <a href="{{ url_for('detail', slug='sunset')}}">
-                    <img src="{{ url_for('static', filename='img/art/sunset.png') }}" alt="Artwork - Sunset">
-                </a>
-                <p class="pull-right muted">Oct 15, 2012</p>
-                <strong>Sunset</strong>
-            </div>
-        </li>
+        {% endfor %}
     </ul>
 {% endblock %}
