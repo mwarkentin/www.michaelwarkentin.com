@@ -3,8 +3,8 @@
   {% set icon='<i class="' ~ icon ~ '"></i>' %}
 {% endif %}
 {%- if request.endpoint.endswith(endpoint) %}
-<li class='active'><a href='#'>{{icon|safe}}{{text}}</a></li>
+<li class='active'><a href='#'>{{icon|safe}} {{text}}</a></li>
 {% else %}
-<li><a href='{{url_for(endpoint)}}'>{{icon|safe}}{{text}}</a></li>
+<li><a href='{{url_for(endpoint)}}'>{{icon|safe}} {{text}}</a></li>
 {%- endif %}
 {% endmacro %}
