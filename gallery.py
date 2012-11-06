@@ -34,7 +34,7 @@ assets.register('js_all', js)
 class Piece(db.Model):
     title = CharField()
     slug = CharField()
-    cover_url = CharField()
+    url = CharField()
     created = DateTimeField(default=datetime.datetime.now)
     is_published = BooleanField(default=True)
     notes = TextField(null=True)
@@ -75,8 +75,6 @@ def gallery():
 def detail(slug):
     piece = get_object_or_404(Piece.select().where(Piece.slug == slug))
     images = PieceImage.select().where(PieceImage.piece == piece)
-    for image in images:
-        print image.title
     return render_template('detail.html', piece=piece, images=images)
 
 
