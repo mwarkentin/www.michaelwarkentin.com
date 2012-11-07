@@ -4,7 +4,7 @@ import os
 
 from flask import Flask, flash, redirect, render_template, url_for
 from flask.ext.assets import Bundle, Environment
-from flask.ext.wtf import Form, Required, TextAreaField, TextField as FormTextField
+from flask.ext.wtf import Email, Form, Required, TextAreaField, TextField as FormTextField
 from flask.ext.wtf.html5 import EmailField
 from flask_peewee.admin import Admin, ModelAdmin
 from flask_peewee.auth import Auth
@@ -71,7 +71,7 @@ admin.setup()
 
 class ContactForm(Form):
     name = FormTextField('Name', validators=[Required()])
-    email = EmailField('Email', validators=[Required()])
+    email = EmailField('Email', validators=[Required(), Email()])
     message = TextAreaField('Message', validators=[Required()])
 
 
