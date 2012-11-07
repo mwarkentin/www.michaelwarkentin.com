@@ -1,13 +1,18 @@
 import datetime
+import logging
 import os
 
-from flask import Flask, render_template
+from flask import Flask, flash, redirect, render_template, url_for
 from flask.ext.assets import Bundle, Environment
+from flask.ext.wtf import Form, Required, TextAreaField, TextField as FormTextField
+from flask.ext.wtf.html5 import EmailField
 from flask_peewee.admin import Admin, ModelAdmin
 from flask_peewee.auth import Auth
 from flask_peewee.db import Database
 from flask_peewee.utils import get_object_or_404
 from peewee import BooleanField, CharField, DateTimeField, ForeignKeyField, TextField
+
+logging.basicConfig(level=logging.INFO)
 
 
 DATABASE = {
@@ -64,6 +69,12 @@ admin.register(PieceImage, PieceImageAdmin)
 admin.setup()
 
 
+class ContactForm(Form):
+    name = FormTextField('Name', validators=[Required()])
+    email = EmailField('Email', validators=[Required()])
+    message = TextAreaField('Message', validators=[Required()])
+
+
 @app.route('/')
 @app.route('/gallery')
 def gallery():
@@ -83,9 +94,19 @@ def prices():
     return render_template('prices.html')
 
 
-@app.route('/contact')
+@app.route('/contact', methods=['GET', 'POST'])
 def contact():
-    return render_template('contact.html')
+    form = ContactForm()
+    if form.validate_on_submit():
+        name = form.data['name']
+        email = form.data['email']
+        message = form.data['message']
+
+        logging.info('%s (%s): %s' % (name, email, message,))
+
+        flash("Thanks for contacting me.. I'll get back to you as soon as possible!", 'success')
+        # return redirect(url_for('gallery'))
+    return render_template('contact.html', form=form)
 
 if __name__ == '__main__':
     auth.User.create_table(fail_silently=True)

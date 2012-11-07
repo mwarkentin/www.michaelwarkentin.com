@@ -1,17 +1,42 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form action="">
+    <form method="POST" action="">
+        {{ form.csrf_token }}
+
         <fieldset>
-            <label for="">Name</label>
-            <input type="text">
-
-            <label for="">Email</label>
-            <input type="email">
-
-            <label for="">Message</label>
-            <textarea name="" rows="5" class="input-xxlarge"></textarea>
+            <div class="control-group {% if form.name.errors %}error{% endif %}">
+                {{ form.name.label }} {{ form.name }}
+                {% if form.name.errors %}
+                <ul class="help-inline">
+                    {% for error in form.name.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            <div class="control-group {% if form.email.errors %}error{% endif %}">
+                {{ form.email.label }} {{ form.email }}
+                {% if form.email.errors %}
+                <ul class="help-inline">
+                    {% for error in form.email.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            <div class="control-group {% if form.message.errors %}error{% endif %}">
+                {{ form.message.label }} {{ form.message(rows=5, class="input-xxlarge") }}
+                {% if form.message.errors %}
+                <ul class="help-inline">
+                    {% for error in form.message.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
         </fieldset>
+
         <div class="form-actions">
             <button type="submit" class="btn btn-primary">Send email</button>
         </div>
