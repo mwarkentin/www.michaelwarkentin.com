@@ -98,9 +98,9 @@ def prices():
 def contact():
     form = ContactForm()
     if form.validate_on_submit():
-        name = form.data['name']
-        email = form.data['email']
-        message = form.data['message']
+        name = form.name.data
+        email = form.email.data
+        message = form.message.data
 
         logging.info('%s (%s): %s' % (name, email, message,))
 
