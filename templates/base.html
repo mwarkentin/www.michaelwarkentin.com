@@ -1,4 +1,4 @@
-{% import 'macros.html' as macros %}
+{% from "_macros.html" import navlink %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,9 +18,9 @@
             <div class="navbar-inner">
                 <a href="{{ url_for('gallery') }}" class="brand">Michael Warkentin</a>
                 <ul class="nav">
-                    {{ macros.navlink(request, 'gallery', 'Gallery', 'icon-th-large') }}
-                    {{ macros.navlink(request, 'prices', 'Prices', 'icon-tags') }}
-                    {{ macros.navlink(request, 'contact', 'Contact', 'icon-envelope') }}
+                    {{ navlink(request, 'gallery', 'Gallery', 'icon-th-large') }}
+                    {{ navlink(request, 'prices', 'Prices', 'icon-tags') }}
+                    {{ navlink(request, 'contact', 'Contact', 'icon-envelope') }}
                 </ul>
             </div>
         </div>
