@@ -100,7 +100,7 @@ def contact():
 
         msg = Message("Contact Form Submission (%s)" % email,
             reply_to=email,
-            recipients=[ADMIN_EMAIL],
+            recipients=[app.config['ADMIN_EMAIL']],
             body=message)
         mail.send(msg)
 
@@ -115,4 +115,4 @@ if __name__ == '__main__':
     Piece.create_table(fail_silently=True)
     PieceImage.create_table(fail_silently=True)
 
-    app.run(debug=DEBUG, host='0.0.0.0', port=PORT)
+    app.run(host='0.0.0.0')
