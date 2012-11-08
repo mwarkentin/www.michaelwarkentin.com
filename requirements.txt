@@ -7,7 +7,9 @@ WTForms==1.0.2
 Werkzeug==0.8.3
 blinker==1.2
 flask-peewee==0.6.1
+gunicorn==0.15.0
 peewee==2.0.3
+psycopg2==2.4.5
 webassets==0.7
 wsgiref==0.1.2
 wtf-peewee==0.2.0
