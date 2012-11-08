@@ -6,6 +6,7 @@ from flask import Flask, flash, redirect, render_template, url_for
 from flask.ext.assets import Bundle, Environment
 from flask.ext.wtf import Email, Form, Required, TextAreaField, TextField as FormTextField
 from flask.ext.wtf.html5 import EmailField
+from flask_mail import Mail, Message
 from flask_peewee.admin import Admin, ModelAdmin
 from flask_peewee.auth import Auth
 from flask_peewee.db import Database
@@ -22,12 +23,21 @@ DATABASE = {
 DEBUG = True
 SECRET_KEY = os.environ['SECRET_KEY']
 
+MAIL_SERVER = 'smtp.mandrillapp.com'
+MAIL_PORT = 587
+MAIL_USE_TLS = True
+MAIL_USERNAME = os.environ['MAIL_USERNAME']
+MAIL_PASSWORD = os.environ['MAIL_PASSWORD']
+ADMIN_EMAIL = os.environ['ADMIN_EMAIL']
+DEFAULT_MAIL_SENDER = ADMIN_EMAIL
+
 app = Flask(__name__)
 app.config.from_object(__name__)
 assets = Environment(app)
 db = Database(app)
 auth = Auth(app, db)
 admin = Admin(app, auth)
+mail = Mail(app)
 
 css = Bundle('css/bootstrap.css')
 assets.register('css_all', css)
@@ -102,10 +112,16 @@ def contact():
         email = form.email.data
         message = form.message.data
 
+        msg = Message("Contact Form Submission (%s)" % email,
+            reply_to=email,
+            recipients=[ADMIN_EMAIL],
+            body=message)
+        mail.send(msg)
+
         logging.info('%s (%s): %s' % (name, email, message,))
 
         flash("Thanks for contacting me.. I'll get back to you as soon as possible!", 'success')
-        # return redirect(url_for('gallery'))
+        return redirect(url_for('gallery'))
     return render_template('contact.html', form=form)
 
 if __name__ == '__main__':
