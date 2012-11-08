@@ -134,7 +134,6 @@ def contact():
     return render_template('contact.html', form=form)
 
 if __name__ == '__main__':
-    logging.info('__name__: %s' % __name__)
     auth.User.create_table(fail_silently=True)
     Piece.create_table(fail_silently=True)
     PieceImage.create_table(fail_silently=True)
