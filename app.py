@@ -1,6 +1,7 @@
 import datetime
 import logging
 import os
+import urlparse
 
 from flask import Flask, flash, redirect, render_template, url_for
 from flask.ext.assets import Bundle, Environment
@@ -15,12 +16,20 @@ from peewee import BooleanField, CharField, DateTimeField, ForeignKeyField, Text
 
 logging.basicConfig(level=logging.INFO)
 
+urlparse.uses_netloc.append('postgres')
+url = urlparse.urlparse(os.environ['DATABASE_URL'])
 
 DATABASE = {
-    'name': 'gallery.db',
-    'engine': 'peewee.SqliteDatabase',
+    'engine': 'peewee.PostgresqlDatabase',
+    'name': url.path[1:],
+    'user': url.username,
+    'password': url.password,
+    'host': url.hostname,
+    'port': url.port,
 }
+
 DEBUG = True
+PORT = int(os.environ.get('PORT', 5000))
 SECRET_KEY = os.environ['SECRET_KEY']
 
 MAIL_SERVER = 'smtp.mandrillapp.com'
@@ -129,4 +138,4 @@ if __name__ == '__main__':
     Piece.create_table(fail_silently=True)
     PieceImage.create_table(fail_silently=True)
 
-    app.run(debug=True)
+    app.run(debug=DEBUG, host='0.0.0.0', port=PORT)
