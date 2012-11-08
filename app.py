@@ -60,10 +60,6 @@ class PieceImage(db.Model):
 class PieceImageAdmin(ModelAdmin):
     columns = ('title', 'piece', 'url',)
 
-admin.register(Piece, PieceAdmin)
-admin.register(PieceImage, PieceImageAdmin)
-admin.setup()
-
 
 class ContactForm(Form):
     name = FormTextField('Name', validators=[Required()])
@@ -114,5 +110,9 @@ if __name__ == '__main__':
     auth.User.create_table(fail_silently=True)
     Piece.create_table(fail_silently=True)
     PieceImage.create_table(fail_silently=True)
+
+    admin.register(Piece, PieceAdmin)
+    admin.register(PieceImage, PieceImageAdmin)
+    admin.setup()
 
     app.run(host='0.0.0.0')
