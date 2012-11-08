@@ -1,6 +1,7 @@
 import datetime
 import logging
 import os
+import urlparse
 
 from flask import Flask, flash, redirect, render_template, url_for
 from flask.ext.assets import Bundle, Environment
@@ -16,23 +17,8 @@ from peewee import BooleanField, CharField, DateTimeField, ForeignKeyField, Text
 logging.basicConfig(level=logging.INFO)
 
 
-DATABASE = {
-    'name': 'gallery.db',
-    'engine': 'peewee.SqliteDatabase',
-}
-DEBUG = True
-SECRET_KEY = os.environ['SECRET_KEY']
-
-MAIL_SERVER = 'smtp.mandrillapp.com'
-MAIL_PORT = 587
-MAIL_USE_TLS = True
-MAIL_USERNAME = os.environ['MAIL_USERNAME']
-MAIL_PASSWORD = os.environ['MAIL_PASSWORD']
-ADMIN_EMAIL = os.environ['ADMIN_EMAIL']
-DEFAULT_MAIL_SENDER = ADMIN_EMAIL
-
 app = Flask(__name__)
-app.config.from_object(__name__)
+app.config.from_object(os.environ['CONFIG'])
 assets = Environment(app)
 db = Database(app)
 auth = Auth(app, db)
@@ -74,10 +60,6 @@ class PieceImage(db.Model):
 class PieceImageAdmin(ModelAdmin):
     columns = ('title', 'piece', 'url',)
 
-admin.register(Piece, PieceAdmin)
-admin.register(PieceImage, PieceImageAdmin)
-admin.setup()
-
 
 class ContactForm(Form):
     name = FormTextField('Name', validators=[Required()])
@@ -114,7 +96,7 @@ def contact():
 
         msg = Message("Contact Form Submission (%s)" % email,
             reply_to=email,
-            recipients=[ADMIN_EMAIL],
+            recipients=[app.config['ADMIN_EMAIL']],
             body=message)
         mail.send(msg)
 
@@ -124,9 +106,11 @@ def contact():
         return redirect(url_for('gallery'))
     return render_template('contact.html', form=form)
 
-if __name__ == '__main__':
-    auth.User.create_table(fail_silently=True)
-    Piece.create_table(fail_silently=True)
-    PieceImage.create_table(fail_silently=True)
 
-    app.run(debug=True)
+auth.User.create_table(fail_silently=True)
+Piece.create_table(fail_silently=True)
+PieceImage.create_table(fail_silently=True)
+
+admin.register(Piece, PieceAdmin)
+admin.register(PieceImage, PieceImageAdmin)
+admin.setup()
