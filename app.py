@@ -16,32 +16,9 @@ from peewee import BooleanField, CharField, DateTimeField, ForeignKeyField, Text
 
 logging.basicConfig(level=logging.INFO)
 
-urlparse.uses_netloc.append('postgres')
-url = urlparse.urlparse(os.environ['DATABASE_URL'])
-
-DATABASE = {
-    'engine': 'peewee.PostgresqlDatabase',
-    'name': url.path[1:],
-    'user': url.username,
-    'password': url.password,
-    'host': url.hostname,
-    'port': url.port,
-}
-
-DEBUG = True
-PORT = int(os.environ.get('PORT', 5000))
-SECRET_KEY = os.environ['SECRET_KEY']
-
-MAIL_SERVER = 'smtp.mandrillapp.com'
-MAIL_PORT = 587
-MAIL_USE_TLS = True
-MAIL_USERNAME = os.environ['MAIL_USERNAME']
-MAIL_PASSWORD = os.environ['MAIL_PASSWORD']
-ADMIN_EMAIL = os.environ['ADMIN_EMAIL']
-DEFAULT_MAIL_SENDER = ADMIN_EMAIL
 
 app = Flask(__name__)
-app.config.from_object(__name__)
+app.config.from_object(os.environ['CONFIG'])
 assets = Environment(app)
 db = Database(app)
 auth = Auth(app, db)
