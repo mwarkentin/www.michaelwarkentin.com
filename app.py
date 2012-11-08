@@ -106,13 +106,11 @@ def contact():
         return redirect(url_for('gallery'))
     return render_template('contact.html', form=form)
 
-if __name__ == '__main__':
-    auth.User.create_table(fail_silently=True)
-    Piece.create_table(fail_silently=True)
-    PieceImage.create_table(fail_silently=True)
 
-    admin.register(Piece, PieceAdmin)
-    admin.register(PieceImage, PieceImageAdmin)
-    admin.setup()
+auth.User.create_table(fail_silently=True)
+Piece.create_table(fail_silently=True)
+PieceImage.create_table(fail_silently=True)
 
-    app.run(host='0.0.0.0')
+admin.register(Piece, PieceAdmin)
+admin.register(PieceImage, PieceImageAdmin)
+admin.setup()
