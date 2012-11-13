@@ -8,7 +8,6 @@
                 <a href="{{ url_for('detail', slug=piece.slug)}}">
                     <img src="{{ piece.url }}" alt="{{ piece.title }}">
                 </a>
-                <p class="pull-right muted">{{ piece.created.strftime('%B %d, %Y') }}</p>
                 <strong>{{ piece.title }}</strong>
             </div>
         </li>
