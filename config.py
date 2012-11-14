@@ -31,6 +31,12 @@ class Config(object):
         'port': url.port,
     }
 
+    # Stripe config
+    STRIPE_KEYS = {
+        'secret_key': os.environ['STRIPE_SECRET_KEY'],
+        'publishable_key': os.environ['STRIPE_PUBLISHABLE_KEY']
+    }
+
 
 class LocalConfig(Config):
     DEBUG = True

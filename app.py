@@ -1,7 +1,6 @@
 import datetime
 import logging
 import os
-import urlparse
 
 from flask import Flask, flash, redirect, render_template, url_for
 from flask.ext.assets import Bundle, Environment
@@ -13,6 +12,7 @@ from flask_peewee.auth import Auth
 from flask_peewee.db import Database
 from flask_peewee.utils import get_object_or_404
 from peewee import BooleanField, CharField, DateTimeField, ForeignKeyField, TextField
+import stripe
 
 logging.basicConfig(level=logging.INFO)
 
@@ -30,6 +30,8 @@ assets.register('css_all', css)
 
 js = Bundle('js/bootstrap.js')
 assets.register('js_all', js)
+
+stripe.api_key = app.config['STRIPE_KEYS']['secret_key']
 
 
 class Piece(db.Model):
@@ -78,7 +80,12 @@ def gallery():
 def detail(slug):
     piece = get_object_or_404(Piece.select().where(Piece.slug == slug))
     images = PieceImage.select().where(PieceImage.piece == piece)
-    return render_template('detail.html', piece=piece, images=images)
+    return render_template(
+        'detail.html',
+        piece=piece,
+        images=images,
+        stripe_key=app.config['STRIPE_KEYS']['publishable_key']
+    )
 
 
 @app.route('/prices')

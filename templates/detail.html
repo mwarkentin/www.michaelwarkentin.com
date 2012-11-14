@@ -2,17 +2,17 @@
 
 {% block content %}
     <div class="page-header">
-        <button class="btn btn-large btn-success pull-right">Buy this print</button>
+        <button class="btn btn-large btn-success pull-right js-btn-buy">Buy this print</button>
         <h1>{{ piece.title }} <small>{{ piece.created.strftime('%B %d, %Y') }}</small></h1>
     </div>
 
-    <form action=".">
+    <form action="." class="hide" id="BuyPiece">
         <fieldset>
             <div class="controls controls-row">
                 <select name="size" id="CanvasSize" class="span3">
-                    <option value="L">40x30 - $349</option>
-                    <option value="M">24x18 - $199</option>
-                    <option value="S">18x12 - $149</option>
+                    <option value="40x30">40x30 - $349</option>
+                    <option value="24x18">24x18 - $199</option>
+                    <option value="18x12">18x12 - $149</option>
                 </select>
                 <input type="tel" placeholder="Phone number" class="span2">
                 <input type="email" placeholder="Email address" class="span3">
@@ -27,8 +27,11 @@
         <input type="hidden" value="{{ piece.id }}">
         <input type="hidden" value="{{ piece.title }}">
         <div class="form-actions">
-            <button type="submit" class="btn btn-success">Buy now</button>
-            <button type="button" class="btn">Cancel</button>
+            <script src="https://button.stripe.com/v1/button.js" class="stripe-button"
+                data-key="{{ stripe_key }}"
+                data-description="{{ piece.title }}"
+                data-amount="500"
+                data-address></script>
         </div>
     </form>
 
@@ -51,7 +54,16 @@
 {% block extra_js %}
 <script type="text/javascript">
 $(function(){
-   $('.carousel').carousel();
+    $('.carousel').carousel();
+    $('.js-btn-buy').on('click', function(e) {
+        var $form = $('#BuyPiece'),
+            $btn = $(e.target);
+
+        $form.slideToggle();
+        $btn
+            .toggleClass('btn-success')
+            .text($btn.text() == 'Buy this print' ? 'Cancel' : 'Buy this print');
+    });
 });
 </script>
 {% endblock %}
