@@ -2,9 +2,35 @@
 
 {% block content %}
     <div class="page-header">
-        <button class="btn btn-large btn-success pull-right"><i class="icon-picture icon-white"></i> Buy a print!</button>
+        <button class="btn btn-large btn-success pull-right">Buy this print</button>
         <h1>{{ piece.title }} <small>{{ piece.created.strftime('%B %d, %Y') }}</small></h1>
     </div>
+
+    <form action=".">
+        <fieldset>
+            <div class="controls controls-row">
+                <select name="size" id="CanvasSize" class="span3">
+                    <option value="L">40x30 - $349</option>
+                    <option value="M">24x18 - $199</option>
+                    <option value="S">18x12 - $149</option>
+                </select>
+                <input type="tel" placeholder="Phone number" class="span2">
+                <input type="email" placeholder="Email address" class="span3">
+            </div>
+            <div class="controls controls-row">
+                <input type="text" placeholder="Street address" class="span3">
+                <input type="text" placeholder="City" class="span2">
+                <input type="text" placeholder="Province / State" class="span3">
+                <input type="text" placeholder="Postal code" class="span2">
+            </div>
+        </fieldset>
+        <input type="hidden" value="{{ piece.id }}">
+        <input type="hidden" value="{{ piece.title }}">
+        <div class="form-actions">
+            <button type="submit" class="btn btn-success">Buy now</button>
+            <button type="button" class="btn">Cancel</button>
+        </div>
+    </form>
 
     <div id="DetailsCarousel" class="carousel slide" data-interval="5000">
         <div class="carousel-inner">
