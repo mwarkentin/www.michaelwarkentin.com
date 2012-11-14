@@ -22,3 +22,18 @@
     {% endif %}
   </div>
 {% endmacro %}
+
+{% macro render_size_option(size) %}
+  <option value="{{ size.id }}">{{ size.width }}x{{ size.height}} - ${{ size.price // 100 }}</option>
+{% endmacro %}
+
+{% macro render_price(size) %}
+  <div class="row">
+    <div class="span10">
+      <img src="http://placehold.it/{{size.width * 20}}x{{size.height*20}}/D91965/fff&text={{size.width}}x{{size.height}}" alt="{{size.width}}x{{size.height}}">
+    </div>
+    <div class="span2">
+      <h1>${{size.price // 100}}</h1>
+    </div>
+  </div>
+{% endmacro %}

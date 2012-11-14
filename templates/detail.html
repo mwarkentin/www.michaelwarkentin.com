@@ -1,3 +1,5 @@
+{% from "_macros.html" import render_size_option %}
+
 {% extends "base.html" %}
 
 {% block content %}
@@ -6,31 +8,24 @@
         <h1>{{ piece.title }} <small>{{ piece.created.strftime('%B %d, %Y') }}</small></h1>
     </div>
 
-    <form action="." class="hide" id="BuyPiece">
+    <form action="/charge" method="POST" class="hide" id="BuyPiece">
         <fieldset>
             <div class="controls controls-row">
                 <select name="size" id="CanvasSize" class="span3">
-                    <option value="40x30">40x30 - $349</option>
-                    <option value="24x18">24x18 - $199</option>
-                    <option value="18x12">18x12 - $149</option>
+                    {% for size in available_sizes %}
+                        {{ render_size_option(size) }}
+                    {% endfor %}
                 </select>
-                <input type="tel" placeholder="Phone number" class="span2">
-                <input type="email" placeholder="Email address" class="span3">
-            </div>
-            <div class="controls controls-row">
-                <input type="text" placeholder="Street address" class="span3">
-                <input type="text" placeholder="City" class="span2">
-                <input type="text" placeholder="Province / State" class="span3">
-                <input type="text" placeholder="Postal code" class="span2">
+                <input type="tel" name="phone" placeholder="Phone number" class="span2">
+                <input type="email" name="email" placeholder="Email address" class="span3">
             </div>
         </fieldset>
-        <input type="hidden" value="{{ piece.id }}">
-        <input type="hidden" value="{{ piece.title }}">
+        <input type="hidden" name="piece" value="{{ piece.id }}">
+
         <div class="form-actions">
             <script src="https://button.stripe.com/v1/button.js" class="stripe-button"
                 data-key="{{ stripe_key }}"
                 data-description="{{ piece.title }}"
-                data-amount="500"
                 data-address></script>
         </div>
     </form>
