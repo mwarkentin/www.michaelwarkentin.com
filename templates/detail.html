@@ -33,8 +33,9 @@
         <input type="hidden" name="piece" value="{{ piece.id }}">
 
         <div class="form-actions">
-            <script src="https://button.stripe.com/v1/button.js" class="stripe-button"
+            <script src="https://checkout.stripe.com/v2/checkout.js" class="stripe-button"
                 data-key="{{ stripe_key }}"
+                data-name="Michael Warkentin"
                 data-description="{{ piece.title }}"
                 data-address></script>
         </div>
