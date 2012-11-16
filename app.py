@@ -1,9 +1,8 @@
 import datetime
 import logging
 import os
-import urlparse
 
-from flask import Flask, flash, redirect, render_template, url_for
+from flask import Flask, flash, redirect, render_template, request, url_for
 from flask.ext.assets import Bundle, Environment
 from flask.ext.wtf import Email, Form, Required, TextAreaField, TextField as FormTextField
 from flask.ext.wtf.html5 import EmailField
@@ -13,6 +12,7 @@ from flask_peewee.auth import Auth
 from flask_peewee.db import Database
 from flask_peewee.utils import get_object_or_404
 from peewee import BooleanField, CharField, DateTimeField, ForeignKeyField, TextField
+import stripe
 
 logging.basicConfig(level=logging.INFO)
 
@@ -25,11 +25,13 @@ auth = Auth(app, db)
 admin = Admin(app, auth)
 mail = Mail(app)
 
-css = Bundle('css/bootstrap.css')
+css = Bundle('css/bootstrap.css', 'css/custom.css')
 assets.register('css_all', css)
 
 js = Bundle('js/bootstrap.js')
 assets.register('js_all', js)
+
+stripe.api_key = app.config['STRIPE_KEYS']['secret_key']
 
 
 class Piece(db.Model):
@@ -78,12 +80,44 @@ def gallery():
 def detail(slug):
     piece = get_object_or_404(Piece.select().where(Piece.slug == slug))
     images = PieceImage.select().where(PieceImage.piece == piece)
-    return render_template('detail.html', piece=piece, images=images)
+    return render_template(
+        'detail.html',
+        piece=piece,
+        images=images,
+        available_sizes=app.config['AVAILABLE_SIZES'],
+        stripe_key=app.config['STRIPE_KEYS']['publishable_key']
+    )
+
+
+@app.route('/charge', methods=['POST'])
+def charge():
+    size_id = request.form['size']
+    size = filter(lambda size: size['id'] == size_id, app.config['AVAILABLE_SIZES'])[0]
+    piece = Piece.get(Piece.id == request.form['piece'])
+
+    # Amount in cents
+    amount = size['price']
+    description = '%s (%sx%s)' % (piece.title, size['width'], size['height'])
+
+    stripe_response = stripe.Charge.create(
+        amount=amount,
+        currency='cad',
+        card=request.form['stripeToken'],
+        description=description
+    )
+
+    logging.info('ITEM PURCHASE: %s - %s' % (request.form, stripe_response,))
+
+    flash("Thank you so much for purchasing this piece. I know you'll love it! Email mwarkentin@gmail.com or call 647-880-0174 if you have any questions.", 'success')
+    return redirect(url_for('detail', slug=piece.slug))
 
 
 @app.route('/prices')
 def prices():
-    return render_template('prices.html')
+    return render_template(
+        'prices.html',
+        available_sizes=app.config['AVAILABLE_SIZES']
+    )
 
 
 @app.route('/contact', methods=['GET', 'POST'])
