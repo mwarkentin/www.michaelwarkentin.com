@@ -25,7 +25,7 @@ auth = Auth(app, db)
 admin = Admin(app, auth)
 mail = Mail(app)
 
-css = Bundle('css/bootstrap.css')
+css = Bundle('css/bootstrap.css', 'css/custom.css')
 assets.register('css_all', css)
 
 js = Bundle('js/bootstrap.js')

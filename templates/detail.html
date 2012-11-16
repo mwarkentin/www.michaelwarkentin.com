@@ -9,15 +9,25 @@
     </div>
 
     <form action="/charge" method="POST" class="hide" id="BuyPiece">
+        <div class="arrow"></div>
         <fieldset>
-            <div class="controls controls-row">
+            <div class="pull-left">
+                <label for="CanvasSize">Size</label>
                 <select name="size" id="CanvasSize" class="span3">
                     {% for size in available_sizes %}
                         {{ render_size_option(size) }}
                     {% endfor %}
                 </select>
-                <input type="tel" name="phone" placeholder="Phone number" class="span2">
-                <input type="email" name="email" placeholder="Email address" class="span3">
+            </div>
+
+            <div class="pull-left">
+                <label for="phone">Phone number</label>
+                <input type="tel" name="phone" placeholder="555-555-5555" class="span2">
+            </div>
+
+            <div class="pull-left">
+                <label for="email">Email</label>
+                <input type="email" name="email" placeholder="joe@example.com" class="span3">
             </div>
         </fieldset>
         <input type="hidden" name="piece" value="{{ piece.id }}">
@@ -57,7 +67,7 @@ $(function(){
         $form.slideToggle();
         $btn
             .toggleClass('btn-success')
-            .text($btn.text() == 'Buy this print' ? 'Cancel' : 'Buy this print');
+            .text($btn.text() == 'Buy this print' ? 'x' : 'Buy this print');
     });
 });
 </script>
