@@ -1,6 +1,7 @@
 import datetime
 import logging
 import os
+from urlparse import urlparse, urlunparse
 
 from flask import Flask, flash, redirect, render_template, request, url_for
 from flask.ext.assets import Bundle, Environment
@@ -139,6 +140,16 @@ def contact():
         flash("Thanks for contacting me.. I'll get back to you as soon as possible!", 'success')
         return redirect(url_for('gallery'))
     return render_template('contact.html', form=form)
+
+
+@app.before_request
+def redirect_non_www():
+    """Redirect non-www requests to www."""
+    urlparts = urlparse(request.url)
+    if urlparts.netloc == 'michaelwarkentin.com':
+        urlparts_list = list(urlparts)
+        urlparts_list[1] = 'www.michaelwarkentin.com'
+        return redirect(urlunparse(urlparts_list), code=301)
 
 
 auth.User.create_table(fail_silently=True)
