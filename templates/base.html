@@ -1,4 +1,4 @@
-{% from "_macros.html" import navlink %}
+{% from "_macros.html" import google_analytics, navlink %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -43,5 +43,9 @@
     {% endassets %}
 
     {% block extra_js %}{% endblock %}
+
+    {% if config.GA_TRACKING_ID %}
+        {{ google_analytics(config.GA_TRACKING_ID, config.GA_DOMAIN_NAME) }}
+    {% endif %}
 </body>
 </html>

@@ -44,6 +44,10 @@ class Config(object):
         {'id': 'S', 'width': 18, 'height': 12, 'price': 14900},
     )
 
+    # Google Analytics
+    GA_TRACKING_ID = os.environ.get('GA_TRACKING_ID')
+    GA_DOMAIN_NAME = os.environ.get('GA_DOMAIN_NAME')
+
 
 class LocalConfig(Config):
     DEBUG = True
