@@ -1,33 +1,15 @@
+{% from "_macros.html" import render_price %}
+
 {% extends "base.html" %}
 
 {% block content %}
     <p class="lead">All pieces are printed using archival-grade canvas, printers, ink and frames. Hanging hardware is installed, and I'll even include a nail!</p>
     <p class="lead">Shipping is included to anywhere in Canada or the U.S.</p>
     <hr>
-    <div class="row">
-        <div class="span10">
-            <img src="http://placehold.it/800x600/D91965/fff&text=40x30" alt="40x30">
-        </div>
-        <div class="span2">
-            <h1>$349</h1>
-        </div>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="span10">
-            <img src="http://placehold.it/480x360/D91965/fff&text=24x18" alt="24x18">
-        </div>
-        <div class="span2">
-            <h1>$199</h1>
-        </div>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="span10">
-            <img src="http://placehold.it/360x240/D91965/fff&text=18x12" alt="18x12">
-        </div>
-        <div class="span2">
-            <h1>$149</h1>
-        </div>
-    </div>
+    {% for size in available_sizes %}
+        {{ render_price(size) }}
+        {%- if not loop.last %}
+            <hr>
+        {% endif %}
+    {% endfor %}
 {% endblock %}

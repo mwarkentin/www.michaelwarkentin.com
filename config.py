@@ -31,6 +31,19 @@ class Config(object):
         'port': url.port,
     }
 
+    # Stripe config
+    STRIPE_KEYS = {
+        'secret_key': os.environ['STRIPE_SECRET_KEY'],
+        'publishable_key': os.environ['STRIPE_PUBLISHABLE_KEY']
+    }
+
+    # Purchase options
+    AVAILABLE_SIZES = (
+        {'id': 'L', 'width': 40, 'height': 30, 'price': 34900},
+        {'id': 'M', 'width': 24, 'height': 18, 'price': 19900},
+        {'id': 'S', 'width': 18, 'height': 12, 'price': 14900},
+    )
+
 
 class LocalConfig(Config):
     DEBUG = True
