@@ -12,6 +12,7 @@ from flask_peewee.admin import Admin, ModelAdmin
 from flask_peewee.auth import Auth
 from flask_peewee.db import Database
 from flask_peewee.utils import get_object_or_404
+from flask_sslify import SSLify
 from peewee import BooleanField, CharField, DateTimeField, ForeignKeyField, TextField
 import stripe
 
@@ -25,6 +26,7 @@ db = Database(app)
 auth = Auth(app, db)
 admin = Admin(app, auth)
 mail = Mail(app)
+sslify = SSLify(app)
 
 css = Bundle('css/bootstrap.css', 'css/custom.css')
 assets.register('css_all', css)
