@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     {% block head %}
-    <title>Artwork - Michael Warkentin</title>
+    <title>{% block title %}Abstract Art | Michael Warkentin{% endblock %}</title>
 
     {% assets "css_all" %}
     <link rel="stylesheet" href="{{ ASSET_URL }}">

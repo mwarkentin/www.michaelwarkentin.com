@@ -2,6 +2,8 @@
 
 {% extends "base.html" %}
 
+{% block title %}{{ piece.title }} | {{ super() }}{% endblock %}
+
 {% block content %}
     <div class="page-header">
         <button class="btn btn-large btn-success pull-right js-btn-buy">Buy this print</button>
