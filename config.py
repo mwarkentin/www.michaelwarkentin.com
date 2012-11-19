@@ -50,13 +50,13 @@ class Config(object):
 
     # Static files
     CSS_BOOTSTRAP = 'css/bootstrap.min.css'
-    JS_BOOTSTRAP = 'js/boostrap.min.js'
+    JS_BOOTSTRAP = 'js/bootstrap.min.js'
 
 
 class LocalConfig(Config):
     DEBUG = True
     CSS_BOOTSTRAP = 'css/bootstrap.css'
-    JS_BOOTSTRAP = 'js/boostrap.js'
+    JS_BOOTSTRAP = 'js/bootstrap.js'
 
 
 class ProductionConfig(Config):
