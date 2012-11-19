@@ -28,10 +28,10 @@ admin = Admin(app, auth)
 mail = Mail(app)
 sslify = SSLify(app)
 
-css = Bundle('css/bootstrap.css', 'css/custom.css')
+css = Bundle(app.config['CSS_BOOTSTRAP'], 'css/custom.css')
 assets.register('css_all', css)
 
-js = Bundle('js/bootstrap.js')
+js = Bundle(app.config['JS_BOOTSTRAP'])
 assets.register('js_all', js)
 
 stripe.api_key = app.config['STRIPE_KEYS']['secret_key']

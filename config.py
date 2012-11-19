@@ -48,9 +48,15 @@ class Config(object):
     GA_TRACKING_ID = os.environ.get('GA_TRACKING_ID')
     GA_DOMAIN_NAME = os.environ.get('GA_DOMAIN_NAME')
 
+    # Static files
+    CSS_BOOTSTRAP = 'css/bootstrap.min.css'
+    JS_BOOTSTRAP = 'js/boostrap.min.js'
+
 
 class LocalConfig(Config):
     DEBUG = True
+    CSS_BOOTSTRAP = 'css/bootstrap.css'
+    JS_BOOTSTRAP = 'js/boostrap.js'
 
 
 class ProductionConfig(Config):
